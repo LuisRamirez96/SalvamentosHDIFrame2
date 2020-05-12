@@ -1,0 +1,188 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Validate_Item" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_FactId" Type="InArgument(x:String)" />
+    <x:Property Name="in_Subastadora" Type="InArgument(x:String)" />
+    <x:Property Name="in_Fecha" Type="InArgument(x:String)" />
+    <x:Property Name="in_Estatus" Type="InArgument(x:String)" />
+    <x:Property Name="in_Importe" Type="InArgument(x:String)" />
+    <x:Property Name="in_Comentario" Type="InArgument(x:String)" />
+    <x:Property Name="in_Serie" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1240,3998</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>Validate_Item_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="44">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="40">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>UiPath.Excel</AssemblyReference>
+      <AssemblyReference>UiPath.CV</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities.Design</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Este proceso valida que los datos de entrada contengan la información y la estructura correcta" DisplayName="Validate_Item" sap:VirtualizedContainerService.HintSize="621,3793" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="ImporteTemp" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Registrar mensaje Validate Item" sap:VirtualizedContainerService.HintSize="579,91" sap2010:WorkflowViewState.IdRef="LogMessage_14" Level="Info" Message="[&quot;Validate Item...&quot;]" />
+    <If Condition="[in_Comentario.Contains(&quot;Procesado&quot;)]" DisplayName="If Comentarios is Procesado" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_10">
+      <If.Then>
+        <Throw DisplayName="Throw Registro Ya Procesado exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Registro procesado&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_10" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Comentarios Procesado" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;No procesado&quot;]" />
+      </If.Else>
+    </If>
+    <If Condition="[String.IsNullOrEmpty(in_FactId)]" DisplayName="If Folio is empty" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_1">
+      <If.Then>
+        <Throw DisplayName="Throw Folio exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Falta Número de Folio&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_1" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Folio Contiene" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Folio contiene&quot;]" />
+      </If.Else>
+    </If>
+    <If Condition="[IsNumeric(in_FactId)]" DisplayName="If Folio is not Number" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_7">
+      <If.Then>
+        <ui:LogMessage DisplayName="Registrar mensaje Folio es numerico" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Folio Numérico&quot;]" />
+      </If.Then>
+      <If.Else>
+        <Throw DisplayName="Throw Folio Numeric exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Folio incorrecto&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_7" />
+      </If.Else>
+    </If>
+    <If Condition="[in_FactId.ToString.Length = 5]" DisplayName="If Folio Less Than 5" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_12">
+      <If.Then>
+        <ui:LogMessage DisplayName="Registrar mensaje Folio Correcto" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Folio correcto&quot;]" />
+      </If.Then>
+      <If.Else>
+        <Throw DisplayName="Throw Folio Length exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Tamaño folio incorrecto&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_12" />
+      </If.Else>
+    </If>
+    <If Condition="[String.IsNullOrEmpty(in_Subastadora)]" DisplayName="If Subastadora is empty" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_2">
+      <If.Then>
+        <Throw DisplayName="Throw Subastadora exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Falta Subastadora&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_2" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Subastadora no vacia" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[&quot;Subastadora no es vacia&quot;]" />
+      </If.Else>
+    </If>
+    <If Condition="[in_Subastadora = &quot;Otro Canal&quot;]" DisplayName="If Subastadora is Otro Canal" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_8">
+      <If.Then>
+        <Throw DisplayName="Throw Otro Canal exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Subastadora Otro Canal&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_8" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje No es otro canal Subastadora" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Info" Message="[&quot;Subastadora correcta&quot;]" />
+      </If.Else>
+    </If>
+    <If Condition="[in_Subastadora = &quot;S. Segura&quot; Or in_Subastadora = &quot;Auto Online&quot; Or in_Subastadora = &quot;S. Ventura&quot;]" DisplayName="If Subastadora is not in" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_9">
+      <If.Then>
+        <ui:LogMessage DisplayName="Registrar mensaje Subastadora Correcta" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Subastadora Correcta&quot;]" />
+      </If.Then>
+      <If.Else>
+        <Throw DisplayName="Throw Subastadora Incorrecta exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Subastadora Incorrecta&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_9" />
+      </If.Else>
+    </If>
+    <If Condition="[String.IsNullOrEmpty(in_Fecha)]" DisplayName="If Fecha Factura is empty" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_3">
+      <If.Then>
+        <Throw DisplayName="Throw Fecha Fac exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Falta Fecha de Factura&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_3" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Factura no es vacia" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Info" Message="[&quot;Factura no es vacia&quot;]" />
+      </If.Else>
+    </If>
+    <If Condition="[String.IsNullOrEmpty(in_Estatus) Or in_Estatus &lt;&gt; &quot;Elaborado&quot;]" DisplayName="If Estatus is empty Or Different To Elaborado" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_4">
+      <If.Then>
+        <Throw DisplayName="Throw Estatus exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Estatus vacio o incorrecto&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_4" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Estatus correcto" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Info" Message="[&quot;El estatus es correcto&quot;]" />
+      </If.Else>
+    </If>
+    <If Condition="[String.IsNullOrEmpty(in_Importe)]" DisplayName="If Importe is empty" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_5">
+      <If.Then>
+        <Throw DisplayName="Throw Importe exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Falta Importe&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_5" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Importe no es vacio" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_11" Level="Info" Message="[&quot;Importe no es vacio&quot;]" />
+      </If.Else>
+    </If>
+    <Assign DisplayName="Asignar Temp Importe Excel" sap:VirtualizedContainerService.HintSize="579,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">[ImporteTemp]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">[in_Importe.Replace(",","").Replace(".","")]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:LogMessage DisplayName="Registrar mensaje Importe Temp" sap:VirtualizedContainerService.HintSize="579,91" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Info" Message="[ImporteTemp]" />
+    <If Condition="[IsNumeric(ImporteTemp)]" DisplayName="If Importe is NOT number" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_11">
+      <If.Then>
+        <ui:LogMessage DisplayName="Registrar mensaje Importe temp es numero" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_12" Level="Info" Message="[&quot;Importe Temp Numérico&quot;]" />
+      </If.Then>
+      <If.Else>
+        <Throw DisplayName="Throw Importe Numerico exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Importe no es numerico&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_11" />
+      </If.Else>
+    </If>
+    <If Condition="[String.IsNullOrEmpty(in_Serie) Or in_Serie &lt;&gt; &quot;HFSALV&quot;]" DisplayName="If Serie is empty" sap:VirtualizedContainerService.HintSize="579,239" sap2010:WorkflowViewState.IdRef="If_6">
+      <If.Then>
+        <Throw DisplayName="Throw Serie exception" Exception="[new UiPath.Core.BusinessRuleException(&quot;Falta Serie o es incorrecta&quot;)]" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="Throw_6" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Serie correcta" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_13" Level="Info" Message="[&quot;Serie correcta&quot;]" />
+      </If.Else>
+    </If>
+  </Sequence>
+</Activity>

@@ -1,0 +1,212 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Envio_De_Correos" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:be="clr-namespace:BalaReva.Externals;assembly=BalaReva.Externals" xmlns:bes="clr-namespace:BalaReva.Externals.Systems;assembly=BalaReva.Externals" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_Body" Type="InArgument(x:String)" />
+    <x:Property Name="in_CuentaOrigen" Type="InArgument(x:String)" />
+    <x:Property Name="in_Asunto" Type="InArgument(x:String)" />
+    <x:Property Name="in_DestinoVentura" Type="InArgument(x:String)" />
+    <x:Property Name="in_DestinoAutoOnline" Type="InArgument(x:String)" />
+    <x:Property Name="in_DestinoSegura" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>1240,4528</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>Envio_De_Correos_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="21">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Windows.Markup</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="32">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>UiPath.Mail</AssemblyReference>
+      <AssemblyReference>System.ComponentModel.Composition</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+      <AssemblyReference>System.Runtime.WindowsRuntime</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Este proceso verifica el tamaño de las carpetas de Facturas y PDF para validar si es necesario enviar o esperar, GMAIL solo permite enviar 25 MB por correo" DisplayName="Envio_De_Correos" sap:VirtualizedContainerService.HintSize="797,4323" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="RutaDesktop" />
+      <Variable x:TypeArguments="x:Double" Name="SizeSegura" />
+      <Variable x:TypeArguments="x:Double" Name="SizeAutoOnline" />
+      <Variable x:TypeArguments="x:Double" Name="SizeVentura" />
+      <Variable x:TypeArguments="x:Int32" Name="NumFilesSegura" />
+      <Variable x:TypeArguments="x:Int32" Name="NumFilesAutoOnline" />
+      <Variable x:TypeArguments="x:Int32" Name="NumFilesVentura" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <ui:LogMessage DisplayName="Registrar mensaje Envio de correos..." sap:VirtualizedContainerService.HintSize="755,91" sap2010:WorkflowViewState.IdRef="LogMessage_13" Level="Info" Message="[&quot;Envio de correos...&quot;]" />
+    <ui:GetEnvironmentFolder DisplayName="Obtener carpeta de entorno de Escritorio" FolderPath="[RutaDesktop]" sap:VirtualizedContainerService.HintSize="755,61" sap2010:WorkflowViewState.IdRef="GetEnvironmentFolder_1" SpecialFolder="Desktop" />
+    <Assign DisplayName="Numero archivos S. Segura" sap:VirtualizedContainerService.HintSize="755,60" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int32">[NumFilesSegura]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int32">[Directory.GetFiles(RutaDesktop+"\Carpeta Facturas S. Segura").Count]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Numero archivos Auto Online" sap:VirtualizedContainerService.HintSize="755,60" sap2010:WorkflowViewState.IdRef="Assign_2">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int32">[NumFilesAutoOnline]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int32">[Directory.GetFiles(RutaDesktop+"\Carpeta Facturas Auto Online").Count]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign DisplayName="Numero archivos S. Ventura" sap:VirtualizedContainerService.HintSize="755,60" sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:Int32">[NumFilesVentura]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:Int32">[Directory.GetFiles(RutaDesktop+"\Carpeta Facturas S. Ventura").Count]</InArgument>
+      </Assign.Value>
+    </Assign>
+    <ui:LogMessage DisplayName="Registrar mensaje Total Mensajes" sap:VirtualizedContainerService.HintSize="755,91" sap2010:WorkflowViewState.IdRef="LogMessage_3" Level="Info" Message="[&quot;FilesSegura: &quot;+NumFilesSegura.ToString+&quot; AutoOnline: &quot;+NumFilesAutoOnline.ToString+&quot; Ventura: &quot;+NumFilesVentura.ToString]" />
+    <If Condition="[NumFilesSegura &gt;= 2]" DisplayName="Si S. Segura contiene archivos" sap:VirtualizedContainerService.HintSize="755,239" sap2010:WorkflowViewState.IdRef="If_2">
+      <If.Then>
+        <bes:DirectorySize FindDirectoryName="{x:Null}" OutPutPath="{x:Null}" SizeBytes="{x:Null}" DirectoryPath="[RutaDesktop+&quot;\Carpeta Facturas S. Segura&quot;]" DisplayName="Directory Size S. Segura" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="DirectorySize_1" IncludeSubDir="True" SizeMB="[SizeSegura]" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Segura No Archivos" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_7" Level="Info" Message="[&quot;Segura No Archivos&quot;]" />
+      </If.Else>
+    </If>
+    <If Condition="[NumFilesAutoOnline &gt;= 2]" DisplayName="Si Auto Online contiene archivos" sap:VirtualizedContainerService.HintSize="755,239" sap2010:WorkflowViewState.IdRef="If_3">
+      <If.Then>
+        <bes:DirectorySize FindDirectoryName="{x:Null}" OutPutPath="{x:Null}" SizeBytes="{x:Null}" DirectoryPath="[RutaDesktop+&quot;\Carpeta Facturas Auto Online&quot;]" DisplayName="Directory Size Auto Online" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="DirectorySize_2" IncludeSubDir="True" SizeMB="[SizeAutoOnline]" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje AutoOnline No Archivos" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_8" Level="Info" Message="[&quot;AutoOnline No Archivos&quot;]" />
+      </If.Else>
+    </If>
+    <If Condition="[NumFilesVentura &gt;= 2]" DisplayName="Si S. Ventura contiene archivos" sap:VirtualizedContainerService.HintSize="755,239" sap2010:WorkflowViewState.IdRef="If_4">
+      <If.Then>
+        <bes:DirectorySize FindDirectoryName="{x:Null}" OutPutPath="{x:Null}" SizeBytes="{x:Null}" DirectoryPath="[RutaDesktop+&quot;\Carpeta Facturas S. Ventura&quot;]" DisplayName="Directory Size S. Ventura" sap:VirtualizedContainerService.HintSize="200,22" sap2010:WorkflowViewState.IdRef="DirectorySize_3" IncludeSubDir="True" SizeMB="[SizeVentura]" />
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Ventura No Archivos" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_9" Level="Info" Message="[&quot;Ventura No Archivos&quot;]" />
+      </If.Else>
+    </If>
+    <ui:LogMessage DisplayName="Registrar mensaje Tamaño Carpetas" sap:VirtualizedContainerService.HintSize="755,91" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="[&quot;Tamaño Segura: &quot;+SizeSegura.ToString+&quot; | Tamaño AutoOnline: &quot;+SizeAutoOnline.ToString+&quot; | Tamaño Ventura: &quot;+SizeVentura.ToString+&quot;&quot;]" />
+    <If Condition="[SizeSegura &gt;= 21.0 Or NumFilesSegura &gt;= 500]" DisplayName="Si MB de S. Segura es mayor a 21.0 OR Files &gt;= 500" sap:VirtualizedContainerService.HintSize="755,826" sap2010:WorkflowViewState.IdRef="If_5">
+      <If.Then>
+        <Sequence DisplayName="Secuencia Correo Segura" sap:VirtualizedContainerService.HintSize="376,678" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <be:ZipFiles MultipleFolders="{x:Null}" Password="{x:Null}" DisplayName="Zip S. Segura" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="ZipFiles_2" SourceFolder="[RutaDesktop+&quot;\Carpeta Facturas S. Segura&quot;]" ZipFile="[RutaDesktop+&quot;\Carpeta Facturas S. Segura.zip&quot;]" />
+          <ui:SendOutlookMail Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Account="[in_CuentaOrigen]" Body="[in_Body]" DisplayName="Send Outlook Mail Message Segura ZIP" sap:VirtualizedContainerService.HintSize="334,145" sap2010:WorkflowViewState.IdRef="SendOutlookMail_2" IsBodyHtml="True" IsDraft="False" Subject="[in_Asunto]" To="[in_DestinoSegura]">
+            <ui:SendOutlookMail.Files>
+              <scg:List x:TypeArguments="InArgument(x:String)" Capacity="4">
+                <InArgument x:TypeArguments="x:String">[RutaDesktop+"\Carpeta Facturas S. Segura.zip"]</InArgument>
+              </scg:List>
+            </ui:SendOutlookMail.Files>
+          </ui:SendOutlookMail>
+          <ui:Delete ContinueOnError="{x:Null}" DisplayName="Eliminar Segura ZIP" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delete_1" Path="[RutaDesktop+&quot;\Carpeta Facturas S. Segura.zip&quot;]" />
+          <ui:Delete ContinueOnError="{x:Null}" DisplayName="Eliminar Segura" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delete_4" Path="[RutaDesktop+&quot;\Carpeta Facturas S. Segura&quot;]" />
+          <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Crear carpeta S. Segura" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="CreateDirectory_1" Path="[RutaDesktop+&quot;\Carpeta Facturas S. Segura&quot;]" />
+          <ui:LogMessage DisplayName="Registrar mensaje Correo Segura" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_4" Level="Info" Message="[&quot;Se envio correo Segura y eliminó ZIP&quot;]" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Segura No Envia" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_10" Level="Info" Message="[&quot;Segura No Envia&quot;]" />
+      </If.Else>
+    </If>
+    <If Condition="[SizeAutoOnline &gt;= 21.0 OR NumFilesAutoOnline &gt;= 500]" DisplayName="Si MB de Auto Online es mayor a 21.0 OR Files &gt;= 500" sap:VirtualizedContainerService.HintSize="755,826" sap2010:WorkflowViewState.IdRef="If_6">
+      <If.Then>
+        <Sequence DisplayName="Secuencia Correo Auto Online" sap:VirtualizedContainerService.HintSize="376,678" sap2010:WorkflowViewState.IdRef="Sequence_3">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <be:ZipFiles MultipleFolders="{x:Null}" Password="{x:Null}" DisplayName="Zip Auto Online" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="ZipFiles_3" SourceFolder="[RutaDesktop+&quot;\Carpeta Facturas Auto Online&quot;]" ZipFile="[RutaDesktop+&quot;\Carpeta Facturas Auto Online.zip&quot;]" />
+          <ui:SendOutlookMail Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Account="[in_CuentaOrigen]" Body="[in_Body]" DisplayName="Send Outlook Mail Message Auto Online ZIP" sap:VirtualizedContainerService.HintSize="334,145" sap2010:WorkflowViewState.IdRef="SendOutlookMail_3" IsBodyHtml="True" IsDraft="False" Subject="[in_Asunto]" To="[in_DestinoAutoOnline]">
+            <ui:SendOutlookMail.Files>
+              <scg:List x:TypeArguments="InArgument(x:String)" Capacity="4">
+                <InArgument x:TypeArguments="x:String">[RutaDesktop+"\Carpeta Facturas Auto Online.zip"]</InArgument>
+              </scg:List>
+            </ui:SendOutlookMail.Files>
+          </ui:SendOutlookMail>
+          <ui:Delete ContinueOnError="{x:Null}" DisplayName="Eliminar Auto Online ZIP" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delete_2" Path="[RutaDesktop+&quot;\Carpeta Facturas Auto Online.zip&quot;]" />
+          <ui:Delete ContinueOnError="{x:Null}" DisplayName="Eliminar Auto Online" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delete_5" Path="[RutaDesktop+&quot;\Carpeta Facturas Auto Online&quot;]" />
+          <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Crear carpeta Auto Online" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="CreateDirectory_2" Path="[RutaDesktop+&quot;\Carpeta Facturas Auto Online&quot;]" />
+          <ui:LogMessage DisplayName="Registrar mensaje Correo Auto Online" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_5" Level="Info" Message="[&quot;Se envio correo AutoOnline y eliminó ZIP&quot;]" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje AutoOnline No Envia" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_11" Level="Info" Message="[&quot;AutoOnline No Envia&quot;]" />
+      </If.Else>
+    </If>
+    <If Condition="[SizeVentura &gt;= 21.0 OR NumFilesVentura &gt;= 500]" DisplayName="Si MB de S. Ventura es mayor a 21.0 OR Files &gt;= 500" sap:VirtualizedContainerService.HintSize="755,826" sap2010:WorkflowViewState.IdRef="If_7">
+      <If.Then>
+        <Sequence DisplayName="Secuencia Correo Ventura" sap:VirtualizedContainerService.HintSize="376,678" sap2010:WorkflowViewState.IdRef="Sequence_4">
+          <sap:WorkflowViewStateService.ViewState>
+            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            </scg:Dictionary>
+          </sap:WorkflowViewStateService.ViewState>
+          <be:ZipFiles MultipleFolders="{x:Null}" Password="{x:Null}" DisplayName="Zip S. Ventura" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="ZipFiles_4" SourceFolder="[RutaDesktop+&quot;\Carpeta Facturas S. Ventura&quot;]" ZipFile="[RutaDesktop+&quot;\Carpeta Facturas S. Ventura.zip&quot;]" />
+          <ui:SendOutlookMail Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Account="[in_CuentaOrigen]" Body="[in_Body]" DisplayName="Send Outlook Mail Message S. Ventura ZIP" sap:VirtualizedContainerService.HintSize="334,145" sap2010:WorkflowViewState.IdRef="SendOutlookMail_1" IsBodyHtml="True" IsDraft="False" Subject="[in_Asunto]" To="[in_DestinoVentura]">
+            <ui:SendOutlookMail.Files>
+              <scg:List x:TypeArguments="InArgument(x:String)" Capacity="4">
+                <InArgument x:TypeArguments="x:String">[RutaDesktop+"\Carpeta Facturas S. Ventura.zip"]</InArgument>
+              </scg:List>
+            </ui:SendOutlookMail.Files>
+          </ui:SendOutlookMail>
+          <ui:Delete ContinueOnError="{x:Null}" DisplayName="Eliminar Ventura ZIP" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delete_3" Path="[RutaDesktop+&quot;\Carpeta Facturas S. Ventura.zip&quot;]" />
+          <ui:Delete ContinueOnError="{x:Null}" DisplayName="Eliminar Ventura" sap:VirtualizedContainerService.HintSize="334,22" sap2010:WorkflowViewState.IdRef="Delete_6" Path="[RutaDesktop+&quot;\Carpeta Facturas S. Ventura&quot;]" />
+          <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Crear carpeta S. Ventura" sap:VirtualizedContainerService.HintSize="334,84" sap2010:WorkflowViewState.IdRef="CreateDirectory_3" Path="[RutaDesktop+&quot;\Carpeta Facturas S. Ventura&quot;]" />
+          <ui:LogMessage DisplayName="Registrar mensaje Correo Ventura" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_6" Level="Info" Message="[&quot;Se envio correo Ventura y eliminó ZIP&quot;]" />
+        </Sequence>
+      </If.Then>
+      <If.Else>
+        <ui:LogMessage DisplayName="Registrar mensaje Ventura No Envia" sap:VirtualizedContainerService.HintSize="334,91" sap2010:WorkflowViewState.IdRef="LogMessage_12" Level="Info" Message="[&quot;Ventura No Envia&quot;]" />
+      </If.Else>
+    </If>
+  </Sequence>
+</Activity>
